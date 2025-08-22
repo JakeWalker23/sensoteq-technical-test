@@ -1,8 +1,8 @@
 import { describe, it, expect, vi } from 'vitest'
-import { listFilmsByCategory } from '../../src/services/filmsService'
-import * as filmsModel from '../../src/models/filmsModel'
+import { listFilmsByCategory, deleteFilmById } from '../../src/services/FilmsService'
+import * as FilmsModel from '../../src/models/FilmsModel.js'
 
-vi.spyOn(filmsModel, 'findFilmsByCategory').mockResolvedValue([
+vi.spyOn(FilmsModel, 'findFilmsByCategory').mockResolvedValue([
   { film_id: 1, title: 'Mocked', description: null, rental_rate: 2.99 }
 ])
 

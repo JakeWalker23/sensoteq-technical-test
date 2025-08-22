@@ -28,3 +28,13 @@ export async function findFilmsByCategory(categoryName: string): Promise<FilmSum
 
   return rows
 }
+
+export async function removeFilm(filmId: number): Promise<number> {
+  const result = await db
+    .deleteFrom('film')
+    .where('film_id', '=', filmId)
+    .executeTakeFirst()
+
+  // result can be undefined if nothing matched
+  return result?.numDeletedRows ? Number(result.numDeletedRows) : 0
+}
