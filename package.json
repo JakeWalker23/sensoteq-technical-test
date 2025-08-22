@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node --unhandled-rejections=strict --trace-uncaught dist/index.js",
     "test": "jest --runInBand",
     "build": "tsc -p tsconfig.json",
     "check": "tsc --noEmit"
@@ -13,11 +14,18 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
+    "@types/pg": "^8.15.5",
     "jest": "^30.0.5",
     "ts-jest": "^29.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "kysely": "^0.28.5",
+    "pg": "^8.16.3"
   }
 }
