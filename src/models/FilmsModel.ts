@@ -15,13 +15,15 @@ export async function findFilmsByCategory(categoryName: string): Promise<FilmSum
     .selectFrom('category as c')
     .innerJoin('film_category as fc', 'c.category_id', 'fc.category_id')
     .innerJoin('film as f', 'fc.film_id', 'f.film_id')
-    .select(({ ref }) => [
-      ref('f.film_id').as('film_id'),
-      ref('f.title').as('title'),
-      ref('f.description').as('description'),
-      sql<number>`CAST(${ref('f.rental_rate')} AS float8)`.as('rental_rate'),
+    .select([
+      'f.film_id as film_id',
+      'f.title as title',
+      'f.description as description',
+      // direct cast to number in SQL:
+      sql<number>`f.rental_rate::float8`.as('rental_rate'),
     ])
-    .where(sql`LOWER(${sql.ref('c.name')})`, '=', name.toLowerCase())
+    .where('c.name', 'ilike', name)   // case-insensitive match
+    .orderBy('f.title asc')
     .execute()
 
   return rows

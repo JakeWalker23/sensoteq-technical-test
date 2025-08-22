@@ -1,8 +1,8 @@
 import { Kysely, PostgresDialect } from 'kysely'
-import pg from 'pg'
+import { Pool } from 'pg'
 import type { Database } from '../interfaces/db.js'
 
-const pool = new pg.Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 })
 
