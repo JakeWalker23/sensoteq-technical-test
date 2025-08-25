@@ -5,7 +5,7 @@ export const CreateCustomerSchema = z.object({
   first_name: z.string().trim().min(1),
   last_name: z.string().trim().min(1),
   email: z.string().email(),
-  phone: z.string().trim().min(1),         // <-- REQUIRED now
+  phone: z.string().trim().min(1),
   address: z.string().trim().min(1),
   address2: z.string().trim().optional().default(''),
   district: z.string().trim().min(1),

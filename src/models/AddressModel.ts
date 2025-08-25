@@ -25,11 +25,7 @@ export const AddressModel = {
       .executeTakeFirstOrThrow();
     return row.address_id;
   },
-
-
-
-
-
+  
   async deleteIfUnreferenced(exec: Executor, address_id: number): Promise<boolean> {
     // Is any customer still pointing at this address?
     const anyCustomer = await exec

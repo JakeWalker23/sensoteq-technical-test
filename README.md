@@ -27,10 +27,10 @@ pnpm run
 # Overview
 
 ```
-GET /films?category=Action
+GET /films?category_name=Action
 ```
 
-curl -s http://localhost:3000/films?category=Action
+curl -s "http://localhost:3000/films?category_name=Action" | jq
 
 
 
@@ -59,7 +59,7 @@ BODY {
 }
 ```
 
-curl -s -X POST http://localhost:3000/customers \
+curl -s -X POST "http://localhost:3000/customers" \
   -H "Content-Type: application/json" \
   -d '{
     "store_id": 1,
@@ -80,4 +80,4 @@ curl -s -X POST http://localhost:3000/customers \
 DELETE /customer/:customerid 
 ```
 
-curl -i -X DELETE http://localhost:3000/customers/40
+curl -i -X DELETE "http://localhost:3000/customers/40"

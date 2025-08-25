@@ -6,8 +6,8 @@
   "type": "module",
   "scripts": {
     "start": "node --unhandled-rejections=strict --trace-uncaught dist/index.js",
-    "test": "vitest run",
     "build": "tsc -p tsconfig.json",
+    "test": "vitest run --reporter=verbose",
     "check": "tsc --noEmit"
   },
   "keywords": [],
@@ -17,8 +17,6 @@
     "@types/express": "^5.0.3",
     "@types/node": "^24.3.0",
     "@types/pg": "^8.15.5",
-    "@vitest/coverage-v8": "^3.2.4",
-    "@vitest/ui": "^3.2.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
