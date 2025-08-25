@@ -25,4 +25,22 @@ export const AddressModel = {
       .executeTakeFirstOrThrow();
     return row.address_id;
   },
+
+
+
+
+
+  async deleteIfUnreferenced(exec: Executor, address_id: number): Promise<boolean> {
+    // Is any customer still pointing at this address?
+    const anyCustomer = await exec
+      .selectFrom('customer')
+      .select(['customer_id'])
+      .where('address_id', '=', address_id)
+      .limit(1)
+      .executeTakeFirst()
+    if (anyCustomer) return false
+
+    await exec.deleteFrom('address').where('address_id', '=', address_id).executeTakeFirst()
+    return true
+  },
 };

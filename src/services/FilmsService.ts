@@ -9,7 +9,7 @@ export async function listFilmsByCategory(categoryName: string): Promise<FilmSum
   return findFilmsByCategory(categoryName)
 }
 
-
 export async function searchFilms(query: FilmSearchQuery, exec: Executor = db) {
   return FilmModel.search(exec, query);
 }
+
