@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* DVD Rental Management System Design System */
+@layer base {
+  :root {
+    /* Sensoteq brand theme - Deep dark with crimson accent */
+    --background: 0 0% 6%;
+    --foreground: 0 0% 96%;
+
+    /* Cards with glass effect */
+    --card: 0 0% 8%;
+    --card-foreground: 0 0% 96%;
+
+    /* Popovers */
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 96%;
+
+    /* Primary Sensoteq crimson */
+    --primary: 347 100% 54%;
+    --primary-foreground: 0 0% 96%;
+    --primary-glow: 347 100% 64%;
+
+    /* Secondary with dark accents */
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 96%;
+
+    /* Muted backgrounds */
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 65%;
+
+    /* Accent colors - matching primary */
+    --accent: 347 100% 54%;
+    --accent-foreground: 0 0% 96%;
+
+    /* Destructive red - slightly different from primary */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 96%;
+
+    /* Borders and inputs */
+    --border: 0 0% 18%;
+    --input: 0 0% 12%;
+    --ring: 347 100% 54%;
+
+    /* Success green */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 96%;
+
+    /* Warning orange */
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 96%;
+
+    /* Gradients with Sensoteq crimson */
+    --gradient-primary: linear-gradient(135deg, hsl(347 100% 54%), hsl(347 100% 64%));
+    --gradient-secondary: linear-gradient(135deg, hsl(0 0% 8%), hsl(0 0% 12%));
+    --gradient-hero: linear-gradient(135deg, hsl(347 100% 54% / 0.08), hsl(347 100% 64% / 0.04));
+
+    /* Shadows with crimson glow */
+    --shadow-glow: 0 0 40px hsl(347 100% 54% / 0.4);
+    --shadow-card: 0 10px 30px -10px hsl(0 0% 2% / 0.6);
+    --shadow-elegant: 0 20px 40px -12px hsl(0 0% 2% / 0.7);
+
+    /* Animation */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-inter;
+  }
+}
+
+@layer components {
+  /* Glass morphism effect */
+  .glass {
+    @apply bg-card/80 backdrop-blur-xl border border-border/50;
+  }
+  
+  /* Glow effects */
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+  
+  /* Hero gradient background */
+  .hero-bg {
+    background: var(--gradient-hero);
+  }
+  
+  /* Hover scale animation */
+  .hover-scale {
+    transition: var(--transition-smooth);
+  }
+  
+  .hover-scale:hover {
+    transform: scale(1.02);
+  }
+  
+  /* Loading pulse */
+  .loading-pulse {
+    @apply animate-pulse bg-muted rounded-md;
+  }
+}

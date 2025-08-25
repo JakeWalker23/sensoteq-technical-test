@@ -17,7 +17,9 @@ services:
       retries: 20
 
   api:
-    build: .
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     container_name: sensoteq-api
     depends_on:
       db:
@@ -28,3 +30,15 @@ services:
       NODE_ENV: development
     ports:
       - "3000:3000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE: http://localhost:3000
+    container_name: sensoteq-frontend
+    ports:
+      - "5173:5173"
+    depends_on:
+      - api

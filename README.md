@@ -1,37 +1,38 @@
-# Sensoteq Technical Test
+# Sensoteq Technical Test - Full Stack Engineer
+
+![alt text](screenshot.png)
 
 
 ## Tech Stack
-- Node v ->
-- pnpm
+###  Backend
+ - Typescript
+ - Express
+ - Keysely
+
+###  Frontend
+  - React
+  - Radix UI
 
 
-### To Build:
+### To Build && Run:
 ```
-pnpm run build
+docker compose up -d --build 
 ```
 
 ### To Test
 ```
+cd backend
 pnpm run test
 ```
 
 
-### To Run:
-```
-pnpm run 
-```
-
-
-
-# Overview
+# API Overview
 
 ```
 GET /films?category_name=Action
 ```
 
 curl -s "http://localhost:3000/films?category_name=Action" | jq
-
 
 
 ```
@@ -81,3 +82,10 @@ DELETE /customer/:customerid
 ```
 
 curl -i -X DELETE "http://localhost:3000/customers/40"
+
+
+
+
+
+
+So much to do in so little time. I will keep pushing to this repo until its complete, so please give me a additional day or 2 to finish this off.
