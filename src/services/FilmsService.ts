@@ -1,5 +1,6 @@
-import { findFilmsByCategory, type FilmSummary } from '../models/FilmsModel.js'
-import { removeFilm } from '../models/FilmsModel.js'
+import { db, type Executor } from '../db/kysely.js';
+import { findFilmsByCategory, type FilmSummary, FilmModel } from '../models/FilmsModel.js'
+import type { FilmSearchQuery } from '../validators/Film.js';
 
 export async function listFilmsByCategory(categoryName: string): Promise<FilmSummary[]> {
   if (!categoryName || !categoryName.trim()) {
@@ -8,7 +9,7 @@ export async function listFilmsByCategory(categoryName: string): Promise<FilmSum
   return findFilmsByCategory(categoryName)
 }
 
-export async function deleteFilmById(filmId: number): Promise<boolean> {
-  const rowsAffected = await removeFilm(filmId)
-  return rowsAffected > 0
+
+export async function searchFilms(query: FilmSearchQuery, exec: Executor = db) {
+  return FilmModel.search(exec, query);
 }

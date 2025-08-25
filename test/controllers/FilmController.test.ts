@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { listFilmsByCategory, deleteFilmById } from '../../src/services/FilmsService'
+import { listFilmsByCategory } from '../../src/services/FilmsService'
 import * as FilmsModel from '../../src/models/FilmsModel.js'
 
 vi.spyOn(FilmsModel, 'findFilmsByCategory').mockResolvedValue([

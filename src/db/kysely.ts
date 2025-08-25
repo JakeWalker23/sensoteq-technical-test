@@ -1,6 +1,6 @@
-import { Kysely, PostgresDialect } from 'kysely'
+import { Kysely, PostgresDialect, Transaction } from 'kysely'
 import { Pool } from 'pg'
-import type { Database } from '../interfaces/db.js'
+import type { Database } from '../interfaces/db/index.js'
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -14,3 +14,6 @@ export async function closeDb() {
   await db.destroy()
   await pool.end()
 }
+
+
+export type Executor = Kysely<Database> | Transaction<Database>;
