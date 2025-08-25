@@ -53,7 +53,7 @@ beforeEach(() => {
   vi.clearAllMocks()
 })
 
-describe('gdprDeleteCustomer (service)', () => {
+describe('Customer Service Test Suite', () => {
   it('happy path: creates tombstone, reassigns FKs, deletes customer, deletes address', async () => {
     const { exec, state } = makeExec()
 
@@ -129,7 +129,7 @@ describe('gdprDeleteCustomer (service)', () => {
     expect(PaymentModel.reassignCustomer).toHaveBeenCalledWith(trx, 777, 42)
   })
 
-  it('throws 404 when customer not found', async () => {
+  it('should throw HTTP 404 status when customer not found', async () => {
     const { exec } = makeExec()
     ;(CustomerModel.getWithAddressForUpdate as any).mockResolvedValue(undefined)
 
