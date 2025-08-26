@@ -7,96 +7,80 @@ import { useToast } from "@/hooks/use-toast";
 import CustomerForm from "@/components/customer/CustomerForm";
 import CustomerCard from "@/components/customer/CustomerCard";
 
-// Mock data for demonstration - replace with actual API calls
-const mockCustomers = [
-  {
-    id: 1,
-    first_name: "John",
-    last_name: "Doe", 
-    email: "john.doe@example.com",
-    phone: "0123456789",
-    address: "123 Main St",
-    district: "Downtown",
-    city_id: 1,
-    store_id: 1,
-    created_date: "2024-01-15"
-  },
-  {
-    id: 2,
-    first_name: "Jane",
-    last_name: "Smith",
-    email: "jane.smith@example.com", 
-    phone: "0987654321",
-    address: "456 Oak Ave",
-    district: "Uptown",
-    city_id: 2,
-    store_id: 1,
-    created_date: "2024-02-10"
-  }
-];
+const API_BASE = (import.meta.env.VITE_API_BASE)
 
 const CustomersSection = () => {
-  const [customers, setCustomers] = useState(mockCustomers);
+  const [customers, setCustomers] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleCreateCustomer = async (customerData: any) => {
-    setLoading(true);
+  const handleCreateCustomer = async (form: any) => {
+    setLoading(true)
     try {
-      // Replace with actual API call: POST /customer
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate API delay
-      console.log("Creating customer:", customerData);
-      
-      const newCustomer = {
-        ...customerData,
-        id: customers.length + 1,
-        created_date: new Date().toISOString().split('T')[0]
-      };
-      
-      setCustomers(prev => [newCustomer, ...prev]);
-      setIsCreateDialogOpen(false);
-      
-      toast({
-        title: "Success!",
-        description: "Customer created successfully",
-      });
-    } catch (error) {
-      console.error("Error creating customer:", error);
-      toast({
-        title: "Error",
-        description: "Failed to create customer",
-        variant: "destructive",
-      });
-    } finally {
-      setLoading(false);
-    }
-  };
+      const payload = {
+        store_id: Number(form.store_id),
+        first_name: String(form.first_name ?? "").trim(),
+        last_name: String(form.last_name ?? "").trim(),
+        email: String(form.email ?? "").trim(),
+        phone: String(form.phone ?? "").trim(),
+        address: String(form.address ?? "").trim(),
+        address2: form.address2 ? String(form.address2).trim() : undefined,
+        district: String(form.district ?? "").trim(),
+        city_id: Number(form.city_id),
+        postal_code: form.postal_code ? String(form.postal_code).trim() : undefined,
+      }
 
-  const handleDeleteCustomer = async (customerId: number) => {
-    setLoading(true);
-    try {
-      // Replace with actual API call: DELETE /customer/${customerId}
-      await new Promise(resolve => setTimeout(resolve, 800)); // Simulate API delay
-      console.log(`Deleting customer: ${customerId}`);
-      
-      setCustomers(prev => prev.filter(customer => customer.id !== customerId));
-      
-      toast({
-        title: "Success!",
-        description: "Customer deleted successfully",
-      });
-    } catch (error) {
-      console.error("Error deleting customer:", error);
-      toast({
-        title: "Error", 
-        description: "Failed to delete customer",
-        variant: "destructive",
-      });
+      const res = await fetch(`${API_BASE}/customers`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      })
+
+      const text = await res.text()
+      const data = text ? JSON.parse(text) : null
+      if (!res.ok) throw new Error(data?.error || res.statusText)
+
+      const created = {
+        id: data.customer.customer_id,
+        first_name: data.customer.first_name,
+        last_name: data.customer.last_name,
+        email: data.customer.email,
+        phone: payload.phone,
+        address: payload.address,
+        district: payload.district,
+        city_id: payload.city_id,
+        store_id: payload.store_id,
+        created_date: (data.customer.create_date || "").slice(0, 10),
+      }
+
+      setCustomers(prev => [created, ...prev])
+      setIsCreateDialogOpen(false)
+      toast({ title: "Success!", description: `Customer #${created.id} created.` })
+    } catch (err: any) {
+      toast({ title: "Error", description: err?.message || "Failed to create customer", variant: "destructive" })
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }  
+  
+  const handleDeleteCustomer = async (customerId: number) => {
+    setLoading(true)
+    
+    try {
+      const res = await fetch(`${API_BASE}/customers/${customerId}`, { method: "DELETE" })
+      const text = await res.text()
+      const data = text ? JSON.parse(text) : null
+      if (!res.ok) throw new Error(data?.error || res.statusText)
+
+      setCustomers(prev => prev.filter(c => c.id !== customerId))
+      toast({ title: "Deleted", description: `Customer #${customerId} removed.` })
+    } catch (err: any) {
+      toast({ title: "Error", description: err?.message || "Failed to delete customer", variant: "destructive" })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
     <div className="space-y-6">
