@@ -20,7 +20,7 @@ jobs:
 
       # ---------- Backend ----------
       - name: Backend install
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
         working-directory: backend
 
       - name: Backend build
@@ -33,7 +33,7 @@ jobs:
 
       # ---------- Frontend ----------
       - name: Frontend install
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
         working-directory: frontend
 
       - name: Frontend build
