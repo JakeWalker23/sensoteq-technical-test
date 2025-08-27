@@ -49,59 +49,8 @@ pnpm run test:unit
 
 
 
-# API Overview
+# API Documentation
 
-```
-GET /films?category_name=Action
-```
-
-curl -s "http://localhost:3000/films?category_name=Action" | jq
+Please see the openapi spec here: - [OpenAPI (YAML)](backend/openapi/openapi.yaml)
 
 
-```
-GET /films/search?title=to&length=60 
-```
-
-curl -s "http://localhost:3000/films/search?title=to&length=60" | jq
-
-
-
-```
-POST /customer 
-
-BODY { 
-    "store_id": 1,
-    "first_name": "Ada",
-    "last_name": "Lovelace",
-    "email": "ada.lovelace@example.com",
-    "phone": "0123456789",
-    "address": "123 Algorithm Ave",
-    "address2": "Apt 42",
-    "district": "Antrim",
-    "city_id": 1,
-    "postal_code": "BT1 1AA"
-}
-```
-
-curl -s -X POST "http://localhost:3000/customers" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "store_id": 1,
-    "first_name": "Ada",
-    "last_name": "Lovelace",
-    "email": "ada.lovelace@example.com",
-    "phone": "0123456789",
-    "address": "123 Algorithm Ave",
-    "address2": "Apt 42",
-    "district": "Antrim",
-    "city_id": 1,
-    "postal_code": "BT1 1AA"
-  }' | jq
-
-
-
-```
-DELETE /customer/:customerid 
-```
-
-curl -i -X DELETE "http://localhost:3000/customers/40"
