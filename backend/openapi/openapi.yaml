@@ -1,0 +1,224 @@
+openapi: 3.1.0
+info:
+  title: Sensoteq Tech Test API
+  version: 1.0.0
+  description: DVD rental API for the technical test.
+servers:
+  - url: http://localhost:3000
+    description: Local
+tags:
+  - name: Films
+  - name: Customers
+
+paths:
+  /films:
+    get:
+      tags: [Films]
+      summary: List films by category
+      description: Returns films for the given category name.
+      parameters:
+        - in: query
+          name: category_name
+          description: Category name (case-insensitive).
+          required: true
+          schema: { type: string, minLength: 1 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/FilmByCategoryItem'
+        '400':
+          description: Missing or invalid category_name
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /films/search:
+    get:
+      tags: [Films]
+      summary: Search films by title and/or max length
+      description: Provide at least one of `title` or `length`.
+      parameters:
+        - in: query
+          name: title
+          required: false
+          schema: { type: string }
+        - in: query
+          name: length
+          required: false
+          schema: { type: integer, minimum: 0 }
+        - in: query
+          name: limit
+          required: false
+          schema: { type: integer, minimum: 1, default: 20, maximum: 100 }
+        - in: query
+          name: offset
+          required: false
+          schema: { type: integer, minimum: 0, default: 0 }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/FilmSearchResponse' }
+        '400':
+          description: Neither title nor length provided
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /customers:
+    post:
+      tags: [Customers]
+      summary: Create a customer with address
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/CustomerCreateRequest' }
+            examples:
+              sample:
+                value:
+                  store_id: 1
+                  first_name: Ada
+                  last_name: Lovelace
+                  email: ada.lovelace@example.com
+                  phone: "0123456789"
+                  address: 123 Algorithm Ave
+                  address2: Apt 42
+                  district: Antrim
+                  city_id: 1
+                  postal_code: BT1 1AA
+      responses:
+        '201':
+          description: Created
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/CustomerCreateResponse' }
+        '400':
+          description: Invalid payload / foreign keys not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+  /customers/{customer_id}:
+    delete:
+      tags: [Customers]
+      summary: GDPR delete customer (anonymize/reassign, remove address)
+      parameters:
+        - in: path
+          name: customer_id
+          required: true
+          schema: { type: integer, minimum: 1 }
+      responses:
+        '200':
+          description: Deleted
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/DeleteCustomerResponse' }
+        '404':
+          description: Customer not found
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/ErrorResponse' }
+
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error: { type: string }
+        details:
+          type: array
+          items: { type: object }
+      required: [error]
+
+    FilmByCategoryItem:
+      type: object
+      properties:
+        film_id: { type: integer }
+        title: { type: string }
+        description: { type: [string, 'null'] }
+        rental_rate: { type: number }
+      required: [film_id, title, rental_rate]
+
+    FilmSearchItem:
+      type: object
+      properties:
+        film_id: { type: integer }
+        title: { type: string }
+        length: { type: [integer, 'null'] }
+        language: { type: string }
+        categories:
+          type: array
+          items: { type: string }
+        rental_rate: { type: number, nullable: true }
+        description: { type: [string, 'null'] }
+      required: [film_id, title, language, categories]
+
+    FilmSearchResponse:
+      type: object
+      properties:
+        count: { type: integer }
+        results:
+          type: array
+          items: { $ref: '#/components/schemas/FilmSearchItem' }
+      required: [count, results]
+
+    CustomerCreateRequest:
+      type: object
+      properties:
+        store_id: { type: integer, minimum: 1 }
+        first_name: { type: string, minLength: 1 }
+        last_name: { type: string, minLength: 1 }
+        email: { type: string, format: email }
+        phone: { type: string, nullable: true }
+        address: { type: string, minLength: 1 }
+        address2: { type: string, nullable: true }
+        district: { type: string, minLength: 1 }
+        city_id: { type: integer, minimum: 1 }
+        postal_code: { type: string, nullable: true }
+      required:
+        - store_id
+        - first_name
+        - last_name
+        - email
+        - address
+        - district
+        - city_id
+
+    CustomerCreateResponse:
+      type: object
+      properties:
+        customer:
+          type: object
+          properties:
+            customer_id: { type: integer }
+            address_id: { type: integer }
+            store_id: { type: integer }
+            first_name: { type: string }
+            last_name: { type: string }
+            email: { type: string }
+            activebool: { type: boolean }
+            create_date: { type: string, format: date-time }
+          required: [customer_id, address_id, store_id, first_name, last_name, email, activebool, create_date]
+        address:
+          type: object
+          properties:
+            address_id: { type: integer }
+          required: [address_id]
+      required: [customer, address]
+
+    DeleteCustomerResponse:
+      type: object
+      properties:
+        deleted_customer_id: { type: integer }
+        reassigned_to: { type: integer, nullable: true }
+        rentals_reassigned: { type: integer, nullable: true }
+        payments_reassigned: { type: integer, nullable: true }
+        address_deleted: { type: boolean, nullable: true }
+      required: [deleted_customer_id]
