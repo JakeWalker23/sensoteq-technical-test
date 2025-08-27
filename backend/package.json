@@ -7,7 +7,8 @@
   "scripts": {
     "start": "node --unhandled-rejections=strict --trace-uncaught dist/index.js",
     "build": "tsc -p tsconfig.json",
-    "test": "vitest run --reporter=verbose",
+    "test:unit": "vitest run test/unit --reporter=verbose",
+    "test:service": "scripts/test-service.sh",
     "check": "tsc --noEmit"
   },
   "keywords": [],

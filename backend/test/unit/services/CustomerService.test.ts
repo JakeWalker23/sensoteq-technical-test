@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('../../src/models/CustomerModel.js', () => ({
+vi.mock('../../../src/models/CustomerModel.js', () => ({
   CustomerModel: {
     getWithAddressForUpdate: vi.fn(),
     findTombstoneByStore: vi.fn(),
@@ -8,29 +8,29 @@ vi.mock('../../src/models/CustomerModel.js', () => ({
     delete: vi.fn(),
   },
 }))
-vi.mock('../../src/models/AddressModel.js', () => ({
+vi.mock('../../../src/models/AddressModel.js', () => ({
   AddressModel: {
     create: vi.fn(),
     deleteIfUnreferenced: vi.fn(),
   },
 }))
-vi.mock('../../src/models/RentalModel.js', () => ({
+vi.mock('../../../src/models/RentalModel.js', () => ({
   RentalModel: {
     reassignCustomer: vi.fn(),
   },
 }))
-vi.mock('../../src/models/PaymentModel.js', () => ({
+vi.mock('../../../src/models/PaymentModel.js', () => ({
   PaymentModel: {
     reassignCustomer: vi.fn(),
   },
 }))
 
-const { CustomerModel } = await import('../../src/models/CustomerModel.js')
-const { AddressModel } = await import('../../src/models/AddressModel.js')
-const { RentalModel } = await import('../../src/models/RentalModel.js')
-const { PaymentModel } = await import('../../src/models/PaymentModel.js')
-const { gdprDeleteCustomer } = await import('../../src/services/CustomerService.js')
-import { HTTPError } from '../../src/utils/Errors.js'
+const { CustomerModel } = await import('../../../src/models/CustomerModel.js')
+const { AddressModel } = await import('../../../src/models/AddressModel.js')
+const { RentalModel } = await import('../../../src/models/RentalModel.js')
+const { PaymentModel } = await import('../../../src/models/PaymentModel.js')
+const { gdprDeleteCustomer } = await import('../../../src/services/CustomerService.js')
+import { HTTPError } from '../../../src/utils/Errors.js'
 
 // A tiny fake executor: trx.execute(cb) calls cb with a mock trx object
 function makeExec() {

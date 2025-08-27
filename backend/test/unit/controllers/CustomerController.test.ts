@@ -1,11 +1,10 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import { HTTPError } from '../../src/utils/Errors.js'
-import { response } from 'express'
+import { HTTPError } from '../../../src/utils/Errors.js'
 
-const { postCreateCustomer, deleteCustomer } = await import('../../src/controllers/CustomersController.js')
-const { createCustomerWithAddress, gdprDeleteCustomer } = await import('../../src/services/CustomerService.js')
+const { postCreateCustomer, deleteCustomer } = await import('../../../src/controllers/CustomersController.js')
+const { createCustomerWithAddress, gdprDeleteCustomer } = await import('../../../src/services/CustomerService.js')
 
-vi.mock('../../src/services/CustomerService.js', () => ({
+vi.mock('../../../src/services/CustomerService.js', () => ({
     createCustomerWithAddress: vi.fn(),
     gdprDeleteCustomer: vi.fn(),
   }))

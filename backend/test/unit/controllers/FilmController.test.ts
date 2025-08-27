@@ -1,12 +1,12 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 
-vi.mock('../../src/services/FilmsService.js', () => ({
+vi.mock('../../../src/services/FilmsService.js', () => ({
   listFilmsByCategory: vi.fn(),
   searchFilms: vi.fn(),
 }))
 
-const { listFilmsByCategory, searchFilms } = await import('../../src/services/FilmsService.js')
-const { getFilmsByCategory } = await import('../../src/controllers/FilmsController.js')
+const { listFilmsByCategory, searchFilms } = await import('../../../src/services/FilmsService.js')
+const { getFilmsByCategory } = await import('../../../src/controllers/FilmsController.js')
 
 function mockResponse() {
   const res: any = {}

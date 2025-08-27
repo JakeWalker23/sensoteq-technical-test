@@ -17,13 +17,24 @@ jobs:
       - name: Install pnpm
         run: npm i -g pnpm@9
 
-      - name: Backend build & test
+      - name: Backend install
+        working-directory: backend
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Backend build
+        working-directory: backend
+        run: pnpm run build
+
+      - name: Backend unit tests
+        working-directory: backend
+        run: pnpm run test:unit -- --run
+
+      - name: Backend service tests (API + DB via compose on :5000)
         working-directory: backend
         run: |
-          pnpm install --no-frozen-lockfile
-          pnpm run build
-          pnpm test -- --run
-
+          chmod +x scripts/test-service.sh
+          pnpm run test:service      
+      
       - name: Frontend build
         working-directory: frontend
         run: |

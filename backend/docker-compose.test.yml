@@ -1,0 +1,20 @@
+services:
+  db:
+    image: sensoteq/tech-assessment-db:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: dvdrental
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    environment:
+      PORT: 3000
+      DATABASE_URL: postgres://postgres:postgres@db:5432/dvdrental
+      NODE_ENV: test
+    ports:
+      - "5000:3000"
